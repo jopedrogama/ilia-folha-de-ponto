@@ -1,14 +1,10 @@
 package br.com.ilia.digital.folhadeponto.Models;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -16,7 +12,9 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class HorarioModel {
 
     @Id
@@ -33,8 +31,10 @@ public class HorarioModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
         HorarioModel that = (HorarioModel) o;
         return id != null && Objects.equals(id, that.id);
     }

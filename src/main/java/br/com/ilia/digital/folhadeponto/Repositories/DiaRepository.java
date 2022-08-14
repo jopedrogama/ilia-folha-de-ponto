@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface DiaRepository extends JpaRepository<DiaModel, Integer> {
-    @Query("SELECT d FROM DiaModel d WHERE d.data = :diaPesquisado")
-    DiaModel findByDay(@Param("diaPesquisado") LocalDate diaPesquisado);
+
+    @Query("SELECT d FROM DiaModel d WHERE CAST(d.data AS date) = CAST(:diaPesquisado AS date)")
+    DiaModel findByData(@Param("diaPesquisado") LocalDate diaPesquisado);
 }

@@ -1,14 +1,21 @@
 package br.com.ilia.digital.folhadeponto.Services;
 
+import br.com.ilia.digital.folhadeponto.DTOs.BatidasDTOs.BatidaResponseDTO;
+import br.com.ilia.digital.folhadeponto.DTOs.Mappers.HorarioMapper;
+import br.com.ilia.digital.folhadeponto.Exception.DomainException;
 import br.com.ilia.digital.folhadeponto.Models.BatidaModel;
 import br.com.ilia.digital.folhadeponto.Models.DiaModel;
 import br.com.ilia.digital.folhadeponto.Models.HorarioModel;
 import br.com.ilia.digital.folhadeponto.Repositories.DiaRepository;
 import br.com.ilia.digital.folhadeponto.Repositories.HorarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BatidaService {
@@ -17,15 +24,16 @@ public class BatidaService {
     private HorarioRepository horarioRepository;
 
     @Autowired
+    private HorarioMapper horarioMapper;
+
+    @Autowired
     public BatidaService(DiaRepository diaRepository, HorarioRepository horarioRepository) {
         this.diaRepository = diaRepository;
         this.horarioRepository = horarioRepository;
     }
 
-    // TODO trocar o DTO para o model e criar os mappers para fazer a alteração
-    // TODO No Mapper da conversão, verificar se o formato de data e horario está
-    // errado
-    public void baterPonto(BatidaModel batida) {
+    @Transactional
+    public BatidaResponseDTO baterPonto(BatidaModel batida) {
 
         // A decisão de projeto que levou a deixar os repositorios de dia, e de alocação
         // separados,
@@ -39,34 +47,44 @@ public class BatidaService {
         // uma pessoa pode ter
         // dedicado 3h ao projeto XPTO e 2h ao projeto ABC
 
-        // TODO verifica se já tem 4 horarios para aquele dia
+        DiaModel diaCriado = this.diaRepository.findByData(batida.getDia());
 
-        DiaModel diaCriado = this.diaRepository.findByDay(batida.getDia());
+        HorarioModel horario = HorarioModel.builder()
+                .horario(batida.getHorario())
+                .diaModel(diaCriado)
+                .build();
 
-        if (diaCriado == null){
+        List<HorarioModel> horarioList = new ArrayList<>();
+
+        if (diaCriado == null) {
             DiaModel diaModel = new DiaModel();
             diaModel.setData(batida.getDia());
             diaCriado = diaRepository.save(diaModel);
-        }else{
-            List<HorarioModel> horarioList = horarioRepository.findBydiaModel(diaCriado);
 
-            if(horarioList.size() >= 4){
-                throw new RuntimeException("Apenas 4 horários podem ser registrados por dia");
+            horario.setDiaModel(diaModel);
+
+        } else {
+            horarioList = horarioRepository.findBydiaModel(diaCriado);
+
+            if (horarioList.size() >= 4) {
+                throw new DomainException("Apenas 4 horários podem ser registrados por dia", HttpStatus.FORBIDDEN);
+            }
+
+            List<HorarioModel> existeMesmoHorario = horarioList.stream()
+                    .filter(element -> element.getHorario().equals(batida.getHorario()))
+                    .collect(Collectors.toList());
+
+            if (!existeMesmoHorario.isEmpty()) {
+                throw new DomainException("Horários já registrado", HttpStatus.CONFLICT);
             }
         }
 
-
-
-        // TODO verificar se o horario informado, já foi cadastrado anteriormente
-
-        //TODO save horario
-        HorarioModel horario = new HorarioModel();
-        horario.setDiaModel(diaCriado);
-        horario.setHorario(batida.getHorario());
-
         horarioRepository.save(horario);
+        horarioList.add(horario);
 
-        // TODO Converter para o DTO de response
-
+        return BatidaResponseDTO.builder()
+                .horarios(horarioMapper.toDTOList(horarioList))
+                .dia(diaCriado.getData())
+                .build();
     }
 }

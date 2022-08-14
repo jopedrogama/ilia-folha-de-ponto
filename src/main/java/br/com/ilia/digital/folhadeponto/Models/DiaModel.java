@@ -20,7 +20,7 @@ public class DiaModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column()
+    @Column(unique=true)
     @NotNull
     private LocalDate data;
 

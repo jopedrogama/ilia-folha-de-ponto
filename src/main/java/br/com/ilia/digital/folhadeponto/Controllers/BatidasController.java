@@ -25,8 +25,7 @@ public class BatidasController {
     @PostMapping
     public BatidaResponseDTO registrarBatida(@RequestBody BatidaRequestDTO batidaRequestDTO) {
         BatidaModel batidaModel = batidaMapper.toModel(batidaRequestDTO);
-        batidaService.baterPonto(batidaModel);
-        System.out.println(batidaModel);
-        return null;
+        BatidaResponseDTO batidaHorarios = batidaService.baterPonto(batidaModel);
+        return batidaHorarios;
     }
 }
