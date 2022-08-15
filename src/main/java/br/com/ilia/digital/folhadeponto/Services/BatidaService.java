@@ -64,7 +64,7 @@ public class BatidaService {
             horario.setDiaModel(diaModel);
 
         } else {
-            horarioList = horarioRepository.findBydiaModel(diaCriado);
+            horarioList = horarioRepository.findBydiaModelOrderByHorario(diaCriado);
 
             if (horarioList.size() >= 4) {
                 throw new DomainException("Apenas 4 horários podem ser registrados por dia", HttpStatus.FORBIDDEN);

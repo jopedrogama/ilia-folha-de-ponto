@@ -14,13 +14,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Table(name = "dia")
 public class DiaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     @NotNull
     private LocalDate data;
 
@@ -34,8 +35,10 @@ public class DiaModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
         DiaModel diaModel = (DiaModel) o;
         return id != null && Objects.equals(id, diaModel.id);
     }

@@ -2,6 +2,7 @@ package br.com.ilia.digital.folhadeponto.Models;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import javax.persistence.ManyToOne;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "horario")
 public class HorarioModel {
 
     @Id

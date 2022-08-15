@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface HorarioRepository extends JpaRepository<HorarioModel, Long> {
 
-    List<HorarioModel> findBydiaModel(@NotNull DiaModel diaModel);
+    List<HorarioModel> findBydiaModelOrderByHorario(@NotNull DiaModel diaModel);
 }
