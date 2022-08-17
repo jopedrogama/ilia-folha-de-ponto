@@ -1,4 +1,4 @@
-package br.com.ilia.digital.Utils;
+package br.com.ilia.digital.folhadeponto.Utils;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import br.com.ilia.digital.folhadeponto.Exception.DomainException;
 import br.com.ilia.digital.folhadeponto.Models.HorarioModel;
 
-public class CalcularHorasTrabalhadas {
+public class CalcularHoras {
+
+    final static Duration CARGA_MAXIMA = Duration.ofMinutes(10560l); // 44h por 4 semanas
 
     public static Duration calcularHorasTrabalhadas(List<HorarioModel> listHorarios) {
 
@@ -26,7 +28,7 @@ public class CalcularHorasTrabalhadas {
             String horariosMensagem = horariosArrayList.toString();
 
             String mensagemDeExcecao = String.format(
-                    "Você não registrou horário de saída. Os horarios registrados para esse dia são: %sa",
+                    "Você não registrou horário de saída. Os horarios registrados para esse dia são: %s",
                     horariosMensagem);
             throw new DomainException(mensagemDeExcecao, HttpStatus.BAD_REQUEST);
         }
@@ -39,16 +41,24 @@ public class CalcularHorasTrabalhadas {
         return intervalo1.plus(intervalo2);
     }
 
-    public static Duration calcularHorasTrabalhadasMes(List<List<HorarioModel>> listaDeHorarios) {
+    public static Duration calcularBancoDeHorasTrabalhadas(List<List<HorarioModel>> horarios) {
+        Duration totalTrabalhado = Duration.ZERO;
 
-        return Duration.ZERO;
+        horarios.stream().forEach((listaDeHorarios) -> {
+            totalTrabalhado.plus(calcularHorasTrabalhadas(listaDeHorarios));
+        });
+
+        return totalTrabalhado;
+
     }
 
-    public static Duration calcularHorasExcedentes() {
-        return Duration.ZERO;
+    public static Duration calcularHorasExcedentes(Duration horasTrabalhadas) {
+        Duration value = horasTrabalhadas.minus(CARGA_MAXIMA);
+        return value.isNegative() ? Duration.ZERO : value;
     }
 
-    public static Duration calcularHorasDevidas() {
-        return Duration.ZERO;
+    public static Duration calcularHorasDevidas(Duration horasTrabalhadas) {
+        Duration value = CARGA_MAXIMA.minus(horasTrabalhadas);
+        return value.isNegative() ? Duration.ZERO : value;
     }
 }

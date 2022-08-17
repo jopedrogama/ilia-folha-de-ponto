@@ -1,11 +1,11 @@
 package br.com.ilia.digital.folhadeponto.DTOs.FolhaDePontoDTO;
 
+import java.time.Duration;
 import java.time.YearMonth;
 import java.util.List;
 
 import br.com.ilia.digital.folhadeponto.DTOs.AlocacaoDTOs.AlocacaoDTO;
 import br.com.ilia.digital.folhadeponto.DTOs.BatidasDTOs.BatidaResponseDTO;
-import ch.qos.logback.core.util.Duration;
 import lombok.Builder;
 import lombok.Data;
 

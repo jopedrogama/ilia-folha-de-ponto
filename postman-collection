@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "7946623c-15ca-4ad9-8769-a9e45198db3a",
+		"name": "Folha de Ponto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15466115"
+	},
+	"item": [
+		{
+			"name": "Batida",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"teste\": \"2022-08-22T17:50:10\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/v1/batidas",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"batidas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alocar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"dia\": \"2022-08-22\",\r\n  \"tempo\": \"PT0H15M0S\",\r\n  \"nomeProjeto\": \"XPTO Corporation\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/v1/alocacoes",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"alocacoes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pegar Relatorio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/v1/folhas-de-ponto/2022-09",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"v1",
+						"folhas-de-ponto",
+						"2022-09"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "2018-02",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

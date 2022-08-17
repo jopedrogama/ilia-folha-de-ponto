@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import br.com.ilia.digital.Utils.CalcularHorasTrabalhadas;
 import br.com.ilia.digital.folhadeponto.Exception.DomainException;
 import br.com.ilia.digital.folhadeponto.Models.AlocacaoModel;
 import br.com.ilia.digital.folhadeponto.Models.DiaModel;
@@ -16,6 +15,7 @@ import br.com.ilia.digital.folhadeponto.Models.HorarioModel;
 import br.com.ilia.digital.folhadeponto.Repositories.AlocacoesRepository;
 import br.com.ilia.digital.folhadeponto.Repositories.DiaRepository;
 import br.com.ilia.digital.folhadeponto.Repositories.HorarioRepository;
+import br.com.ilia.digital.folhadeponto.Utils.CalcularHoras;
 
 @Service
 public class AlocacoesService {
@@ -48,7 +48,7 @@ public class AlocacoesService {
         List<HorarioModel> horarioList = horarioRepository.findBydiaModelOrderByHorario(alocacaoModel.getDia());
 
         Duration horasJaRegistradas = calcularHorasJaRegistradas(diaCriado);
-        Duration totalDeHorasRestantes = CalcularHorasTrabalhadas.calcularHorasTrabalhadas(horarioList)
+        Duration totalDeHorasRestantes = CalcularHoras.calcularHorasTrabalhadas(horarioList)
                 .minus(horasJaRegistradas);
 
         if (totalDeHorasRestantes.compareTo(alocacaoModel.getDuracao()) < 0) {

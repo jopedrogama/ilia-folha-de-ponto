@@ -27,10 +27,10 @@ public class AlocacoesController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> alocarHoras(@RequestBody AlocacaoDTO alocacaoRequestDTO) {
+    public ResponseEntity<AlocacaoDTO> alocarHoras(@RequestBody AlocacaoDTO alocacaoRequestDTO) {
         AlocacaoModel alocacaoModel = alocacaoMapper.toModel(alocacaoRequestDTO);
         alocacoesService.registrarAlocacao(alocacaoModel);
 
-        return new ResponseEntity<Object>(alocacaoRequestDTO, HttpStatus.CREATED);
+        return new ResponseEntity<AlocacaoDTO>(alocacaoRequestDTO, HttpStatus.CREATED);
     }
 }

@@ -23,8 +23,8 @@ public class HorarioModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dia_id")
     private DiaModel diaModel;
 
     @Column()

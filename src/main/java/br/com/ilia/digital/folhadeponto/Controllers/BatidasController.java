@@ -10,6 +10,7 @@ import br.com.ilia.digital.folhadeponto.Services.BatidaService;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +31,10 @@ public class BatidasController {
     }
 
     @PostMapping
-    public ResponseEntity<BatidaResponseDTO> registrarBatida(@Valid @RequestBody BatidaRequestDTO batidaRequestDTO) {
+    public ResponseEntity<BatidaResponseDTO> registrarBatida(
+            @RequestBody @Valid BatidaRequestDTO batidaRequestDTO) {
         BatidaModel batidaModel = batidaMapper.toModel(batidaRequestDTO);
-        return ResponseEntity.ok(batidaService.baterPonto(batidaModel));
+        BatidaResponseDTO response = batidaService.baterPonto(batidaModel);
+        return new ResponseEntity<BatidaResponseDTO>(response, HttpStatus.CREATED);
     }
 }

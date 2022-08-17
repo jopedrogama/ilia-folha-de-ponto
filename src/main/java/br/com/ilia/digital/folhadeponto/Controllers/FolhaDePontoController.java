@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ilia.digital.folhadeponto.DTOs.FolhaDePontoDTO.RelatorioMensalDTO;
 import br.com.ilia.digital.folhadeponto.Services.FolhaDePontoService;
 
 @RestController
@@ -23,9 +24,8 @@ public class FolhaDePontoController {
         this.folhaDePontoService = folhaDePontoService;
     }
 
-    @GetMapping("{mes}")
-    public ResponseEntity<Object> acessarRelatorioMensal(@PathVariable YearMonth mesAno) {
-        folhaDePontoService.gerarFolhaDePonto(mesAno);
-        return new ResponseEntity<Object>("ok", HttpStatus.OK);
+    @GetMapping("/{mes}")
+    public ResponseEntity<RelatorioMensalDTO> acessarRelatorioMensal(@PathVariable("mes") YearMonth mesAno) {
+        return new ResponseEntity<RelatorioMensalDTO>(folhaDePontoService.gerarFolhaDePonto(mesAno), HttpStatus.OK);
     }
 }

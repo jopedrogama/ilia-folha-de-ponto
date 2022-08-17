@@ -21,10 +21,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "alocacao")
+@Builder
 public class AlocacaoModel {
 
     @Id

@@ -1,5 +1,8 @@
 package br.com.ilia.digital.folhadeponto.DTOs.Mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import br.com.ilia.digital.folhadeponto.DTOs.AlocacaoDTOs.AlocacaoDTO;
@@ -15,5 +18,19 @@ public class AlocacaoMapper {
                 .projeto(alocacaoDTO.getNomeProjeto())
                 .duracao(alocacaoDTO.getTempo())
                 .build();
+    }
+
+    public AlocacaoDTO toDTO(AlocacaoModel alocacaoModel) {
+        return AlocacaoDTO.builder()
+                .nomeProjeto(alocacaoModel.getProjeto())
+                .tempo(alocacaoModel.getDuracao())
+                .build();
+
+    }
+
+    public List<AlocacaoDTO> listToDTo(List<AlocacaoModel> alocacaoList) {
+        return alocacaoList.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,9 @@ public class DiaModel {
     @Column(unique = true)
     @NotNull
     private LocalDate data;
+
+    @OneToMany()
+    private List<HorarioModel> listaHorarios;
 
     public DiaModel(LocalDate dia) {
         this.data = dia;
