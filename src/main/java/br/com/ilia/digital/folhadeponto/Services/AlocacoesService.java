@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,12 +34,13 @@ public class AlocacoesService {
         this.horarioRepository = horarioRepository;
     }
 
+    @Transactional
     public AlocacaoModel registrarAlocacao(AlocacaoModel alocacaoModel) {
         LocalDate queryDate = alocacaoModel.getDia().getData();
-        DiaModel diaCriado = this.diaRepository.findByData(queryDate);
+        DiaModel diaCriado = diaRepository.findByData(queryDate);
 
         if (diaCriado == null) {
-            // TODO essa mensagem poderia ser mais intuiva, avisando que não há nenhum
+            // Essa mensagem poderia ser mais intuiva, avisando que não há nenhum
             // horario registrado, porém iria fugir do escopo do projeto
             throw new DomainException("Não pode alocar tempo maior que o tempo trabalhado no dia",
                     HttpStatus.BAD_REQUEST);

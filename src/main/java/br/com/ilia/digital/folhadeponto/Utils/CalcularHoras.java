@@ -15,7 +15,7 @@ public class CalcularHoras {
 
     public static Duration calcularHorasTrabalhadas(List<HorarioModel> listHorarios) {
 
-        // TODO Apesar dessa validação não estar registrada no swagger, foi importante
+        // Apesar dessa validação não estar registrada no swagger, foi importante
         // para garantir que não haverá um horario incompleto (sem horario final dessa
         // jornada)
         if (listHorarios.size() % 2 != 0) {
@@ -35,7 +35,7 @@ public class CalcularHoras {
 
         Duration intervalo1 = Duration.between(listHorarios.get(0).getHorario(), listHorarios.get(1).getHorario());
         Duration intervalo2 = listHorarios.size() > 2
-                ? Duration.between(listHorarios.get(0).getHorario(), listHorarios.get(1).getHorario())
+                ? Duration.between(listHorarios.get(2).getHorario(), listHorarios.get(3).getHorario())
                 : Duration.ZERO;
 
         return intervalo1.plus(intervalo2);

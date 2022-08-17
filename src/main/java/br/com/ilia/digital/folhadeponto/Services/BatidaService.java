@@ -45,7 +45,7 @@ public class BatidaService {
                     HttpStatus.FORBIDDEN);
         }
 
-        DiaModel diaCriado = this.diaRepository.findByData(batida.getDia());
+        DiaModel diaCriado = diaRepository.findByData(batida.getDia());
 
         HorarioModel horario = HorarioModel.builder()
                 .horario(batida.getHorario())
